@@ -1,30 +1,39 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
-  <router-view/>
+    <div class="app"> 
+      <!-- @update:modelValue="xxx" -->
+      <Editor :modelValue="state" ></Editor>      
+    </div>
 </template>
+<script>
+    import data from './data.json'
+    import {
+        provide,
+        ref
+    } from "vue";
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+    import Editor from "./components/editor"
+    import {
+        registerConfig as config
+    } from "./utils/editor-config"
+    export default {
+        components: {
+            Editor
+        },
+        setup(props) {
+            const state = ref(data)
+            provide("config", config); //将组建配置直接传递
+            return {
+                state
+            }
+        }
     }
-  }
-}
+</script>
+<style lang="scss">
+    .app {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        bottom: 20px;
+        right: 20px;
+    }
 </style>
