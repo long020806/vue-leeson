@@ -1,7 +1,7 @@
 <template>
     <div class="app"> 
-      <!-- @update:modelValue="xxx" -->
-      <Editor :modelValue="state" ></Editor>      
+      <!-- :modelValue @update:modelValue="xxx" -->
+      <Editor v-model="state" ></Editor>      
     </div>
 </template>
 <script>
