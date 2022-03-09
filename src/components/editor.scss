@@ -86,3 +86,17 @@
         }
     }
 }
+// 移动left
+.line-x{
+    position: absolute;
+    bottom:0;
+    top:0;
+    border-left: 1px dashed red;
+}
+// 移动top
+.line-y{
+    position: absolute;
+    left:0;
+    right: 0;
+    border-top: 1px dashed red;
+}

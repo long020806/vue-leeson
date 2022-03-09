@@ -1,4 +1,4 @@
-export default function useMenuDragger(containerRef, data) {
+export default function useMenuDragger(containerRef, data ) {
     let currentCompoent = null;
     const dragenter = (e) => {
         e.dataTransfer.dropEffect = "move"; //h5拖动图标

@@ -35,11 +35,11 @@ export default defineComponent({
        
         const {dragStart,dragEnd} =  useMenuDragger(containerRef,data)
         // 实现获取焦点
-        const {containerMousedown,blockMousedown,focusData}= useFocus(data,(e)=>{
+        const {containerMousedown,blockMousedown,focusData,lastSelectBlock}= useFocus(data,(e)=>{
             //获取焦点后进行拖拽
             mousedown(e)
         });
-        const {mousedown} = useBlockDrag(focusData);
+        const {mousedown,markLine} = useBlockDrag(focusData,lastSelectBlock,data);
 
 
 
@@ -71,10 +71,12 @@ export default defineComponent({
                         {/* 产生内容区域 */}
                         <div class="editor-container-canvas__content" style={containerStyles.value} ref={containerRef} onMousedown={containerMousedown}>
                             {
-                                data.value.blocks.map(item=>(
-                                    <EditorBlock class={item.focus?"editor-block-focus":""} onMousedown={e=>{blockMousedown(e,item)}} block={item}></EditorBlock>
+                                data.value.blocks.map((item,index)=>(
+                                    <EditorBlock class={item.focus?"editor-block-focus":""} onMousedown={e=>{blockMousedown(e,item,index)}} block={item}></EditorBlock>
                                 ))
-                            }
+                            }   
+                            {markLine.x !== null && (<div class="line-x" style={{left:markLine.x+'px'}}></div>)}
+                            {markLine.y !== null && (<div class="line-y" style={{top:markLine.y+'px'}}></div>)}
                         </div>
                     </div>
                 </div>

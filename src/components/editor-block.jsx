@@ -21,6 +21,9 @@ export default defineComponent({
                 props.block.top = props.block.top - offsetHeight/2;//原则上派发事件更改
                 props.block.alignCenter = false;//让渲染后的结果才能居中
             }
+            // 加载完成后设置宽高
+            props.block.width = offsetWidth;
+            props.block.height = offsetHeight;
         })
 
 
