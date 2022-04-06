@@ -1,8 +1,10 @@
 import {reactive} from "vue";
+import {events} from "./event"
 export default function useBlockDrag(focusData,lastSelectBlock,data) {
     let dragState = {
         startX: 0,
-        startY: 0
+        startY: 0,
+        dragging:false// 默认不是正在拖拽
     }
     let markLine = reactive({
         x:null,
@@ -17,6 +19,7 @@ export default function useBlockDrag(focusData,lastSelectBlock,data) {
             startY: e.clientY, //记录每个选中的位置
             startLeft: lastSelectBlock.value.left,// b拖拽前left
             startTop: lastSelectBlock.value.top,// b拖拽前top
+            dragging:false,
             startPos: focusData.value.focus.map(({ top, left }) => ({ top, left })),
             lines:(()=>{
                 const {unfocused} = focusData.value; // 获取其他没选中的元素做辅助线
@@ -49,7 +52,10 @@ export default function useBlockDrag(focusData,lastSelectBlock,data) {
 
     const mousemove = (e) => {
         let { clientX: moveX, clientY: moveY } = e;
-        
+            if(!dragState.dragging){
+                dragState.dragging = true;
+                events.emit("start");// 触发记住之前位置
+            }
 
         // 计算当前元素最新的top和left
         // 鼠标移动后 - 鼠标移动前 + left or top
@@ -96,6 +102,10 @@ export default function useBlockDrag(focusData,lastSelectBlock,data) {
         document.removeEventListener("mouseup", mouseup);
         markLine.x = null;
         markLine.y = null;
+        if(dragState.dragging){
+            // 如果只是点击不会触发
+            events.emit("end");// 触发记住之前位置
+        }
     }
     return {
         mousedown,
